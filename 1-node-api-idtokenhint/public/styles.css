@@ -7,8 +7,13 @@ body {
     width: 800px;
 }
 
+.logo {
+    height: 75px;
+    margin: 30px;
+  }
+
 .button {
-    background-color: #3B2E58;
+    background-color: #333366;
     border: none;
     color: white;
     padding: 15px 32px;

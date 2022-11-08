@@ -1,11 +1,12 @@
 {
-    "azTenantId": "<YOUR-AAD-TENANDID>",
-    "azClientId": "<YOUR-AAD-CLIENTID-FOR-API-ACCESS>",
-    "azClientSecret": "<YOUR-AAD-CLIENTSECRET-FOR-API-ACCESS>",
-    "azCertificateName":  "<YOUR-AAD-CERTNAME>",
-    "azCertThumbprint":  "<YOUR-AAD-CERTTHUMBPRINT>",
-    "azCertificatePrivateKeyLocation":  "<YOUR-AAD-CERTLOCATION>",
-    "CredentialManifest": "<YOUR-MANIFEST-URL>",
-    "IssuerAuthority": "<YOUR-did:ion>",
-    "VerifierAuthority": "<VCs-did:ion>"
+    "azTenantId": "a248040f-996c-4ab2-b123-0c7f8f71cb51",
+    "azClientId": "8d77c86e-cae4-46e6-b37f-0c13bb09a7b8",
+    "azClientSecret": "iaG8Q~4R5JQ2nsRzl3sErrWiVnNN2xh-FHkHJblb",
+    "azCertificateName":  "",
+    "azCertThumbprint":  "",
+    "azCertificatePrivateKeyLocation":  "",
+    "CredentialManifest": "https://verifiedid.did.msidentity.com/v1.0/tenants/a248040f-996c-4ab2-b123-0c7f8f71cb51/verifiableCredentials/contracts/YTI0ODA0MGYtOTk2Yy00YWIyLWIxMjMtMGM3ZjhmNzFjYjUxdmVyaWZpZWRjcmVkZW50aWFsZXhwZXJ0/manifest",
+    "IssuerAuthority": "did:web:carddium.com",
+    "VerifierAuthority": "did:web:carddium.com"
 }
+

@@ -31,7 +31,7 @@ if ( !requestConfigFile ) {
   requestConfigFile = process.env.PRESENTATIONFILE || './presentation_request_config.json';
 }
 var presentationConfig = require( requestConfigFile );
-presentationConfig.registration.clientName = "Node.js SDK API Verifier";
+presentationConfig.registration.clientName = "Carddium";
 presentationConfig.authority = mainApp.config["VerifierAuthority"]
 // copy the issuerDID from the settings and fill in the acceptedIssuers part of the payload
 // this means only that issuer should be trusted for the requested credentialtype

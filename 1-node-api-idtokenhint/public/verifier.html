@@ -14,8 +14,8 @@
     <body>
         <div id="wrap">
             <div style="text-align: center;">
-                <img src="VerifiedCredentialExpert-icon.png" height=200px; />
-                <h1>Verifiable Credential Expert Verification</h1>
+                <img src="carddium_blue.png" height=100px; class="logo" />
+                <h1>Verifiable Credential Verification</h1>
         
             <button type="button" id="sign-in" class="button">VERIFY CREDENTIAL</button>
             <div id="qrText"  style="display:none;">
@@ -85,7 +85,7 @@
                                         document.getElementById('qrcode').style.display = "none";
                                         document.getElementById('message').innerHTML = respMsg.message;
                                         document.getElementById('payload').innerHTML = "Payload: " + JSON.stringify(respMsg.payload);
-                                        document.getElementById('subject').innerHTML = respMsg.firstName +" " + respMsg.lastName +" is a Verifiable Credential Expert";
+                                        document.getElementById('subject').innerHTML = respMsg.firstName +" " + respMsg.lastName +" is a Verified Person";
                                         clearInterval(checkStatus);
                                     }
                                     if (respMsg.status == 'issuance_failed') {
@@ -104,3 +104,4 @@
         </div>
     </body>
 </html>
+

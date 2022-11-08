@@ -18,6 +18,14 @@ const { SSL_OP_COOKIE_EXCHANGE } = require('constants');
 var msal = require('@azure/msal-node');
 const fs = require('fs');
 const crypto = require('crypto');
+var CDP = require('chrome-remote-interface');
+
+var options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/carddium.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/carddium.com/cert.pem'),
+  ca: fs.readFileSync('/etc/letsencrypt/live/carddium.com/chain.pem')
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // config file can come from command line, env var or the default
@@ -92,12 +100,60 @@ fetch( `https://login.microsoftonline.com/${config.azTenantId}/v2.0/.well-known/
 // Main Express server function
 // Note: You'll want to update port values for your setup.
 const app = express()
-const port = process.env.PORT || 8080;
+const port = 443;
 
 var parser = bodyParser.urlencoded({ extended: false });
 
+let client = CDP();
+
+const {Browser} = client;
+
+
+fs.watch('/home/deejaybog/downloads', (event, filename) => {
+
+	console.log(event+' '+filename);
+
+});
+
+async function example() {
+    let client;
+    try {
+        // connect to endpoint
+        client = await CDP();
+        // extract domains
+        const {Browser, Network, Page} = client;
+        // setup handlers
+        Network.requestWillBeSent((params) => {
+//            console.log(params.request.url);
+        });
+
+
+	Browser.setDownloadBehavior({behavior:'allow',
+		downloadPath:'/home/deejaybog/downloads',
+		eventsEnabled:true});
+
+	Browser.downloadWillBegin((params) =>
+		{ console.log('BEGIN: '+params.url); });
+
+        // enable events then start!
+        await Network.enable();
+        await Page.enable();
+        await Page.navigate({url: 'https://news.ycombinator.com'});
+        await Page.loadEventFired();
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (client) {
+//            await client.close();
+        }
+    }
+}
+
+example();
+
 // Serve static files out of the /public directory
 app.use(express.static('public'))
+app.use('/.well-known', express.static('.well-known'))
 
 // Set up a simple server side session store.
 // The session store will briefly cache issuance requests
@@ -151,4 +207,5 @@ var verifier = require('./verifier.js');
 var issuer = require('./issuer.js');
 
 // start server
-app.listen(port, () => console.log(`Example issuer app listening on port ${port}!`))
+//app.listen(port, () => console.log(`Example issuer app listening on port ${port}!`))
+https.createServer(options, app).listen(443)
