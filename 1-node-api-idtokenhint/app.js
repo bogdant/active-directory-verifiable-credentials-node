@@ -104,19 +104,23 @@ const port = 443;
 
 var parser = bodyParser.urlencoded({ extended: false });
 
-let client = CDP();
+//let client = CDP();
+//const {Browser} = client;
 
-const {Browser} = client;
-
+global.counter=0;
 
 fs.watch('/home/deejaybog/downloads', (event, filename) => {
 
-	console.log(event+' '+filename);
+  if(event === 'change' && filename.toLowerCase().endsWith('.pdf'))
+  {
+    console.log(event+' '+global.counter+ ' ' +filename);
+  }
 
 });
 
 async function example() {
     let client;
+    console.log('EXAMPLE START');
     try {
         // connect to endpoint
         client = await CDP();
