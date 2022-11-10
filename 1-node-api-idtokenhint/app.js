@@ -19,6 +19,8 @@ var msal = require('@azure/msal-node');
 const fs = require('fs');
 const crypto = require('crypto');
 var CDP = require('chrome-remote-interface');
+const { PdfReader } = require('pdfreader');
+const addressParser = require('parse-address');
 
 var options = {
   key: fs.readFileSync('/etc/letsencrypt/live/carddium.com/privkey.pem'),
@@ -107,13 +109,33 @@ var parser = bodyParser.urlencoded({ extended: false });
 //let client = CDP();
 //const {Browser} = client;
 
-global.counter=0;
+global.PdfData = new Array();
 
 fs.watch('/home/deejaybog/downloads', (event, filename) => {
 
   if(event === 'change' && filename.toLowerCase().endsWith('.pdf'))
   {
-    console.log(event+' '+global.counter+ ' ' +filename);
+    console.log('PDF: '+filename);
+    var pdf = new PdfReader();
+    pdf.parseFileItems('/home/deejaybog/downloads/'+filename, (err, item) =>{
+      if (err) console.error("error:", err);
+      else if (!item) {
+        console.warn("end of file");
+
+        for(i=0; i<global.PdfData.length-2; i++){
+          var fullAddress = global.PdfData[i+1]+ ' ' + global.PdfData[i+2];
+          addr = addressParser.parseAddress(fullAddress);
+          if(addr && addr.number && addr.state) {
+            console.log("NAME FOUND: "+global.PdfData[i]);
+            console.log("ADDRESS FOUND: "+fullAddress);
+          }
+        }
+      }
+      else if (item.text) {
+        //console.log(item.text);
+        global.PdfData.push(item.text);
+      }
+    });
   }
 
 });
@@ -142,7 +164,9 @@ async function example() {
         // enable events then start!
         await Network.enable();
         await Page.enable();
-        await Page.navigate({url: 'https://news.ycombinator.com'});
+        //await Page.navigate({url: 'chrome://settings/content/pdfDocuments'});
+        await Page.navigate({url: 'https://pse.com'});
+        //await Page.navigate({url: 'https://firsttechfed.com'});
         await Page.loadEventFired();
     } catch (err) {
         console.error(err);
